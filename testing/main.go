@@ -2,20 +2,21 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strings"
 )
 
 func main() {
 	data := ReadFile("./testData/2024-06-13.md")
-	MakeTodos(data)
+	todos := MakeTodos(data)
 
-	// fmt.Printf("Todos: \n%v", todos)
+	fmt.Printf("Todos: \n%v", todos)
 }
 
 type Todo struct {
 	task string
-	info string
+	info []string
 	done bool
 }
 
@@ -24,10 +25,12 @@ func NewTodo(todo []string) Todo {
 		return Todo{}
 	}
 
-	var info string
+	var info []string
+	info = nil
+
 	if len(todo) > 1 {
 		for i := 1; i < len(todo); i++ {
-			info += todo[i]
+			info = append(info, todo[i])
 		}
 	}
 
@@ -45,7 +48,7 @@ func check(e error) {
 }
 
 func ReadFile(filename string) []string {
-	myfile, err := os.Open("./testData/2024-06-13.md") //open the file
+	myfile, err := os.Open(filename) //open the file
 	defer myfile.Close()
 	check(err)
 
